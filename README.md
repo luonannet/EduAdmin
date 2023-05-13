@@ -28,20 +28,11 @@
 #### 后端安装教程. 
 如果你只需要开发前端程序。那么不需要下载后端程序即可直接使用公用的社区版api接口调试。待将要部署的时候再下载下面的后端程序。
 后端程序采用的是go语言编写的。提供windows和linux版本供下载
-1.  首先请确保安装最新版的稳定mysql 和redis 版本。
-2.  在[后台后端程序下载（Linux版本）64位](http://edudoc.todear.net:8990/comunity.zip) 
-4.  在mysql数据库中先建立一个 edu的数据库。
-5.  解压上面下载的后台程序压缩包。将sql导入
-6.  修改conf目录下app.conf配置文件。其中的数据库账号和密码，以及redis账号和db编号。默认为0 第一个
-7.  运行后端程序即可启动后端。　如果部署到正式服务器可以配合ｎｇｉｎｘ　等进行。
-#### 前端ｖｕｅ使用方法
-1.  使用git拉取前端代码 https://gitee.com/luonannet/EduAdmin.git 到EduAdmin 目录下
-2.  进入Edumin目录，执行npm install
-3.  然后运行npm run dev 打开进入测试页面
-4.  使用 npm run build:prod 编译出生产文件。部署在web服务器后即可。 
+需要后端项目的朋友请私信作者
+
 
 #### 使用方法
-1.  演示版本的地址 [后台地址 http://admin.todear.net:8990](http://admin.todear.net:8990)。 用户名和密码都是17760478454 。没有任何权限，只能点点看看。以免演示数据搞混乱了。  学员端演示地址会  [学员端地址 http://www.todear.net:8990](http://www.todear.net:8990) 用户名和密码都是 13551322482
+1.  演示版本的地址 
 2.  如果需要使用在线拨打电话功能需要另外购买一台电话机通过usb连接电脑，大概400元。否则无法直接在网上拨打电话。
 3.    [在线API文档地址 http://doc.todear.net:8990](在线API文档地址http://edudoc.todear.net:8990)
 
@@ -107,6 +98,4 @@
 3.  提交代码
 4. 新建 Pull Request
 
-
-欢迎加入QQ交流群: 609518038
-![交流qq群](https://images.gitee.com/uploads/images/2020/0601/161017_2c696224_870483.png "交流qq群")  
+ 
