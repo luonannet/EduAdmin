@@ -1,0 +1,223 @@
+<template>
+  <div :class="{fullscreen:fullscreen}" class="tinymce-container editor-container">
+    <textarea :id="tinymceId" class="tinymce-textarea" />
+  </div>
+</template>
+
+<script>
+import plugins from "./plugins";
+import toolbar from "./toolbar";
+import fileAxios from "axios";
+import $ImgAPI from "@/api/ImgAPI";
+export default {
+  name: "Tinymce",
+  props: {
+    id: {
+      type: Number,
+      default: function() {
+        return new Date() + (Math.random() * 1000).toFixed(0);
+      }
+    },
+    value: {
+      type: String,
+      default: ""
+    },
+
+    toolbar: {
+      type: Array,
+      required: false,
+      default() {
+        return [];
+      }
+    },
+    menubar: {
+      type: String,
+      default: "file edit insert view format table"
+    },
+    height: {
+      type: Number,
+      required: false,
+      default:360
+    }
+  },
+  data() {
+    return {
+      hasChange: false,
+      hasInit: false,
+      tinymceId: this.id,
+      fullscreen: false,
+      languageTypeList: {
+        en: "en",
+        zh: "zh_CN"
+      }
+    };
+  },
+  computed: {
+    language() {
+      return this.languageTypeList["zh_CN"];
+    }
+  },
+  watch: {
+    id(neid) {
+      this.hasChange = false;
+    },
+
+    value(val) { 
+      if (!this.hasChange && this.hasInit) {
+        this.$nextTick(() =>
+          window.tinymce.get(this.tinymceId + "").setContent(val || "")
+        );
+      }
+    },
+    language() {
+      this.destroyTinymce();
+      this.$nextTick(() => this.initTinymce());
+    }
+  },
+  mounted() {
+    this.initTinymce();
+  },
+  activated() {
+    this.initTinymce();
+  },
+  deactivated() {
+    this.destroyTinymce();
+  },
+  destroyed() {
+    this.destroyTinymce();
+  },
+  methods: {
+
+    initTinymce() {
+      const _this = this;
+      tinymce.init({
+        language: "zh_CN",
+      //  valid_elements : 'meta,link,html,head',
+        selector: `#${this.tinymceId + ""}`,
+        height: this.height,
+        body_class: "panel-body ",
+        object_resizing: false,
+        toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
+        menubar: this.menubar,
+        plugins: plugins,
+        style_formats: [
+          {
+            title: "首行缩进",
+            block: "p",
+            styles: { "text-indent": "2em" }
+          },
+          {
+            title: "行高",
+            items: [
+              { title: "1", styles: { "line-height": "1" }, inline: "span" },
+              {
+                title: "1.5",
+                styles: { "line-height": "1.5" },
+                inline: "span"
+              },
+              { title: "2", styles: { "line-height": "2" }, inline: "span" },
+              {
+                title: "2.5",
+                styles: { "line-height": "2.5" },
+                inline: "span"
+              },
+              { title: "3", styles: { "line-height": "3" }, inline: "span" }
+            ]
+          }
+        ],
+        end_container_on_empty_block: true,
+        powerpaste_word_import: "clean",
+        code_dialog_height: 450,
+        code_dialog_width: 1000,
+        // images_upload_url: this.imageUploadURL,
+        advlist_bullet_styles: "square",
+        advlist_number_styles: "default",
+        imagetools_cors_hosts: ["www.todear.net"],
+        default_link_target: "_blank",
+        link_title: false,
+        nonbreaking_force_tab: true, // inserting nonbreaking space &nbsp; need Nonbreaking Space Plugin
+        init_instance_callback: editor => {
+          if (_this.value) {
+            editor.setContent(_this.value);
+          }
+          _this.hasInit = true;
+          editor.on("NodeChange Change KeyUp SetContent", () => { 
+            this.hasChange = true;
+            this.hasKey = true;
+            this.$emit("input", editor.getContent());
+          });
+        },
+        setup(editor) {
+          editor.on("FullscreenStateChanged", e => {
+            _this.fullscreen = e.state;
+          });
+        },
+        async images_upload_handler(blobInfo, success, failure, progress) {
+          progress(0); 
+          const res = await $ImgAPI.UploadImg("news/0", blobInfo.blob());
+          if (res.code == 200) {
+            success(res.data);
+          } else {
+            alert(res.title)
+          }
+
+          progress(100);
+        }
+      });
+    },
+    destroyTinymce() {
+      const tinymce = window.tinymce.get(this.tinymceId + "");
+      if (this.fullscreen) {
+        tinymce.execCommand("mceFullScreen");
+      }
+
+      if (tinymce) {
+        tinymce.destroy();
+      }
+    },
+    setContent(value) {
+      this.$nextTick(() =>
+          window.tinymce.get(this.tinymceId + "").setContent(value || "")
+        );
+    },
+    getContent() {
+      window.tinymce.get(this.tinymceId + "").getContent();
+    },
+    imageSuccessCBK(arr) {
+      const _this = this;
+      arr.forEach(v => {
+        window.tinymce
+          .get(_this.tinymceId + "")
+          .insertContent(`<img class="wscnph" src="${v.url}" >`);
+      });
+    }
+  }
+};
+</script>
+
+<style scoped>
+.tinymce-container {
+  position: relative;
+  line-height: normal;
+}
+.tinymce-container >>> .mce-fullscreen {
+  z-index: 10000;
+}
+.tinymce-textarea {
+  visibility: hidden;
+  z-index: -1;
+}
+.editor-custom-btn-container {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  /*z-index: 2005;*/
+}
+.fullscreen .editor-custom-btn-container {
+  z-index: 10000;
+  position: fixed;
+}
+.editor-upload-btn {
+  display: inline-block;
+}
+</style>
