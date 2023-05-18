@@ -37,15 +37,19 @@
 3.    [在线API文档地址 http://doc.todear.net:8990](在线API文档地址http://edudoc.todear.net:8990)
 
  #### 预览图
-![登录页](https://images.gitee.com/uploads/images/2020/0327/152009_9afb3de7_870483.png "登录页") 
+![登录页](build/1.png "登录页") 
 
 ## 登录页面。支持多语言选择
 
-![登录页](https://images.gitee.com/uploads/images/2020/0223/214411_ca4b56a7_870483.png "登录页") 
+![支持多语言选择](build/2.png)
+## 系统设置页面
+可以自行修改公司的logo 和名称
+ ![输入图片说明](build/3.png)
 
-数据仪表页面。可以直观的看到员工的工作内容和占比
+##数据仪表页面。
+可以直观的看到员工的工作内容和占比
 
-
+![输入图片说明](4.png)
 
 ![登录页](https://images.gitee.com/uploads/images/2020/0304/201934_361e0b64_870483.png "登录页") 
 
