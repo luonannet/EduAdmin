@@ -25,6 +25,12 @@
 本系统采用前后端分离的开发和运行模式。前端使用vue框架并基于vue-admin-element 模板进行开发。后端使用golang + redis + mysql 进行搭建　可单机运行也可集群运行。 对中小型培训机构的使用没有压力。　
 
 
+#### 整体功能
+
+
+
+![输入图片说明](https://gitee.com/luonannet/EduAdmin/raw/master/%E6%95%99%E5%9F%B9%E7%B3%BB%E7%BB%9F.png)
+
 #### 后端安装教程. 
 如果你只需要开发前端程序。那么不需要下载后端程序即可直接使用公用的社区版api接口调试。待将要部署的时候再下载下面的后端程序。
 后端程序采用的是go语言编写的。提供windows和linux版本供下载
